@@ -4,10 +4,10 @@
 * 传感器事件（例如摇一摇）
 * 远程控制事件（列如耳机的线控、外接手柄、遥控器）
 
-响应链的顺序是：自身 -> superView -> controller -> window -> uiapplication（有可能没有）   
+响应链的顺序是：自身 -> superView -> controller -> window -> uiapplication   
 总的来说传递是自上而下，响应自下而上
 
-注意：控件不能响应的情况有    
+注意：控件不能响应的情况有（事件不能专递）   
 
 * 1.userInteractionEabled = NO
 * 2.hidden = YES
@@ -24,12 +24,30 @@
 
 运行时创建的类是可以添加实例变量，调用class_addivar函数。但是得在调用objc_allocateClassPair之后，objc_registerClassPair之前 。
 
-分类的方法添加顺序尤其在source文件顺序决定
+
   
-那为什么可以添加方法呢，需要研究一下  
+那为什么可以添加方法呢，需要研究一下 ,因为一个类分为存储区和方法区，方法区是通过一个指针指向并没有破坏类的内存布局。在运行期，对象的内存布局已经确定，如果添加实例变量就会破坏类的内部布局，这对编译型语言来说是灾难的。
+
+分类的方法是在运行时候添加的，在调用load方法时方法已经attach到主类中，期添加顺序由其在source文件顺序决定，这个顺序决定期编译顺序和load加载顺序
 
 
 * issue1:
 
 
 ### TCP/IP
+#### TIME_WAIT
+通信双方建立TCP连接后，主动关闭连接的一方会进入TIME_WAIT状态。  
+客户端主动关闭连接时，会发送最后一个ack后，然后进入TIME_WAIT状态，再停留2个MSL时间进入CLOSED状态。 
+
+客户端主动断开连接如下图   
+![avatar](http://dl.iteye.com/upload/attachment/0077/3159/734c7efd-3d62-3946-a234-acdddff3b507.jpg)
+
+### 算法与数据结构
+#### hashMap
+hashMap：hashMap是数组加链表来实现的  
+key进行has运算再求余得到具体在数组的位置，位置一般通过一个链来解决冲突的，链节点保存了key和value
+
+### C++  
+指针和引用
+指针方法属性或者方法的时候通过箭头->  
+引用是别名可以是指针的引用也可以是具体类型
